@@ -1,0 +1,29 @@
+{
+  "name": "api-feedbacks",
+  "version": "1.0.0",
+  "description": "A API about the results of the feedbacks",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "swagger"
+  ],
+  "license": "Unlicense",
+  "private": true,
+  "dependencies": {
+    "connect": "^3.2.0",
+    "js-yaml": "^3.3.0",
+    "swagger-tools": "0.10.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tfg-2016-ASU/tfg-2016-ASU.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/tfg-2016-ASU/tfg-2016-ASU/issues"
+  },
+  "homepage": "https://github.com/tfg-2016-ASU/tfg-2016-ASU#readme"
+}

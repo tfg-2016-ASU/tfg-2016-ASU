@@ -1,0 +1,640 @@
+---
+swagger: "2.0"
+info:
+  description: "A API about the results of the feedbacks"
+  version: "1.0.0"
+  title: "Feedbacks results"
+  termsOfService: "http://helloreverb.com/terms/"
+  contact:
+    name: "Swagger API team"
+    url: "http://swagger.io"
+    email: "foo@example.com"
+  license:
+    name: "MIT"
+    url: "http://opensource.org/licenses/MIT"
+host: "tfg-ana.herokuapp.com"
+basePath: "/api"
+schemes:
+- "http"
+- "https"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+paths:
+  /feedbacks/results:
+    post:
+      tags:
+      - "Feedback results"
+      description: "Post a new feedback result for a student"
+      operationId: "newResult"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "feedback result"
+        required: false
+        schema:
+          $ref: "#/definitions/resultFeedback"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/resultFeedback"
+        400:
+          description: "Invalid Order"
+      x-swagger-router-controller: "Results"
+  /feedbacks/results/{student}/{id_feedback}:
+    get:
+      tags:
+      - "Feedback results"
+      description: "Returns the result of the feedback id_feedback for the student"
+      operationId: "findStudentFeedback"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/xml"
+      - "text/html"
+      parameters:
+      - name: "student"
+        in: "path"
+        description: "Name of student to fetch"
+        required: true
+        type: "string"
+      - name: "id_feedback"
+        in: "path"
+        description: "Id of feedback to fetch"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/resultFeedback"
+        400:
+          description: "Invalid id_feedback supplied"
+        404:
+          description: "Feedback or student not found"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "Results"
+    post:
+      tags:
+      - "Feedback results"
+      description: "Post a new check result for a student and feedback"
+      operationId: "newCheck"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "student"
+        in: "path"
+        description: "student to update"
+        required: true
+        type: "string"
+      - name: "id_feedback"
+        in: "path"
+        description: "feedback to update"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "check result"
+        required: false
+        schema:
+          $ref: "#/definitions/resultCheck"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/resultFeedback"
+        400:
+          description: "Invalid Order"
+      x-swagger-router-controller: "Results"
+    put:
+      tags:
+      - "Feedback results"
+      summary: "Updated feedback result for a student"
+      operationId: "updateResultStudent"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "student"
+        in: "path"
+        description: "student to update"
+        required: true
+        type: "string"
+      - name: "id_feedback"
+        in: "path"
+        description: "feedback to update"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated feedback object"
+        required: false
+        schema:
+          $ref: "#/definitions/resultFeedback"
+      responses:
+        400:
+          description: "Invalid feedback supplied"
+        404:
+          description: "Student not found"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "Results"
+    delete:
+      tags:
+      - "Feedback results"
+      description: "deletes a feedback based on the id_feedback and student supplied"
+      operationId: "deleteFeedbackResult"
+      parameters:
+      - name: "student"
+        in: "path"
+        description: "Name of student to fetch"
+        required: true
+        type: "string"
+      - name: "id_feedback"
+        in: "path"
+        description: "Id of feedback to fetch"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "feeback result deleted for a student"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "Results"
+  /feedbacks/results/{student}/{id_feedback}/{id_check}:
+    get:
+      tags:
+      - "Checks results"
+      description: "Returns the result of the check id_check for the student and the\
+        \ if_feedback"
+      operationId: "findStudentFeedbackCheck"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/xml"
+      - "text/html"
+      parameters:
+      - name: "student"
+        in: "path"
+        description: "Name of student to fetch"
+        required: true
+        type: "string"
+      - name: "id_feedback"
+        in: "path"
+        description: "Id of feedback to fetch"
+        required: true
+        type: "string"
+      - name: "id_check"
+        in: "path"
+        description: "Id of check to fetch"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "results of the check"
+          schema:
+            $ref: "#/definitions/resultCheck"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "ChecksResults"
+    put:
+      tags:
+      - "Checks results"
+      summary: "Updated check result for a student and feedback"
+      operationId: "updateCheckResultStudent"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "student"
+        in: "path"
+        description: "student to update"
+        required: true
+        type: "string"
+      - name: "id_feedback"
+        in: "path"
+        description: "feedback to update"
+        required: true
+        type: "string"
+      - name: "id_check"
+        in: "path"
+        description: "check to update"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated check object"
+        required: false
+        schema:
+          $ref: "#/definitions/resultCheck"
+      responses:
+        400:
+          description: "Invalid check supplied"
+        404:
+          description: "Check not found"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "ChecksResults"
+    delete:
+      tags:
+      - "Checks results"
+      description: "deletes a check based on the id_check, id_feedback and student\
+        \ supplied"
+      operationId: "deleteCheck"
+      parameters:
+      - name: "student"
+        in: "path"
+        description: "Name of student to fetch"
+        required: true
+        type: "string"
+      - name: "id_feedback"
+        in: "path"
+        description: "Id of feedback to fetch"
+        required: true
+        type: "string"
+      - name: "id_check"
+        in: "path"
+        description: "Id of feedback to fetch"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "student deleted"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "ChecksResults"
+  /students:
+    get:
+      tags:
+      - "Students"
+      description: "Returns all students from the system that the user has access\
+        \ to"
+      operationId: "findStudents"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/xml"
+      - "text/html"
+      parameters:
+      - name: "limit"
+        in: "query"
+        description: "maximum number of results to return"
+        required: false
+        type: "integer"
+        format: "int32"
+      responses:
+        200:
+          description: "students response"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/student"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "Students"
+    post:
+      tags:
+      - "Students"
+      description: "Creates a new student in the store."
+      operationId: "addStudent"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "student"
+        description: "Student to add"
+        required: true
+        schema:
+          $ref: "#/definitions/student"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/student"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "Results"
+  /students/{name}:
+    get:
+      tags:
+      - "Students"
+      description: "Returns a students based on a name"
+      operationId: "findStudentByName"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/xml"
+      - "text/html"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "name of student to fetch"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "student response"
+          schema:
+            $ref: "#/definitions/student"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "Students"
+    put:
+      tags:
+      - "Students"
+      summary: "Updated student"
+      operationId: "updateStudent"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "student to update"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated student object"
+        required: true
+        schema:
+          $ref: "#/definitions/student"
+      responses:
+        400:
+          description: "Invalid student supplied"
+        404:
+          description: "Student not found"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "Students"
+    delete:
+      tags:
+      - "Students"
+      description: "deletes a single student based on the name supplied"
+      operationId: "deleteStudent"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "name of student to delete"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "pet deleted"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "Students"
+  /feedbacks:
+    get:
+      tags:
+      - "Feedbacks information"
+      description: "Returns the information about all feedbacks"
+      operationId: "findFeedbacks"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/xml"
+      - "text/html"
+      parameters:
+      - name: "limit"
+        in: "query"
+        description: "maximum number of results to return"
+        required: false
+        type: "integer"
+        format: "int32"
+      responses:
+        200:
+          description: "feedbacks response"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/informationFeedback"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "Default"
+    post:
+      tags:
+      - "Feedbacks information"
+      description: "Post a new feedback information"
+      operationId: "newFeedback"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "feedback information"
+        required: false
+        schema:
+          $ref: "#/definitions/informationFeedback"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/informationFeedback"
+        400:
+          description: "Invalid Order"
+      x-swagger-router-controller: "Feedbacks"
+  /feedbacks/{id_feedback}:
+    get:
+      tags:
+      - "Feedbacks information"
+      description: "Returns the information of the feedback id_feedback"
+      operationId: "findFeedback"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/xml"
+      - "text/html"
+      parameters:
+      - name: "id_feedback"
+        in: "path"
+        description: "Id of feedback to fetch"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/informationFeedback"
+        400:
+          description: "Invalid id_feedback supplied"
+        404:
+          description: "Feedback not found"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "Feedbacks"
+    put:
+      tags:
+      - "Feedbacks information"
+      summary: "Updated feedback for a student"
+      operationId: "updateFeedbackInformation"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "id_feedback"
+        in: "path"
+        description: "feedback to update"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated feedback object"
+        required: false
+        schema:
+          $ref: "#/definitions/informationFeedback"
+      responses:
+        400:
+          description: "Invalid feedback supplied"
+        404:
+          description: "Feedback not found"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "Feedbacks"
+    delete:
+      tags:
+      - "Feedbacks information"
+      description: "deletes a feedback based on the id_feedback supplied"
+      operationId: "deleteFeedbackInformation"
+      parameters:
+      - name: "id_feedback"
+        in: "path"
+        description: "Id of feedback to fetch"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "feeback information deleted"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "Feedbacks"
+definitions:
+  resultFeedback:
+    type: "object"
+    properties:
+      subject:
+        type: "string"
+      edition:
+        type: "string"
+      id_feedback:
+        type: "integer"
+        format: "int32"
+      student:
+        type: "string"
+      reviewer:
+        type: "string"
+      result:
+        type: "string"
+      score:
+        type: "integer"
+        format: "int32g"
+  resultCheck:
+    type: "object"
+    properties:
+      subject:
+        type: "string"
+      edition:
+        type: "string"
+      id_feedback:
+        type: "integer"
+        format: "int32"
+      student:
+        type: "string"
+      id_check:
+        type: "integer"
+        format: "int32"
+      result:
+        type: "string"
+      comments:
+        type: "string"
+  informationFeedback:
+    type: "object"
+    properties:
+      id_feedback:
+        type: "integer"
+        format: "int32"
+      preparation:
+        type: "array"
+        items:
+          $ref: "#/definitions/preparation"
+      checks:
+        type: "array"
+        items:
+          $ref: "#/definitions/check"
+  student:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      group:
+        type: "integer"
+        format: "int32"
+      shift:
+        type: "string"
+  preparation:
+    type: "object"
+    properties:
+      id_preparation:
+        type: "integer"
+        format: "int32"
+      description:
+        type: "string"
+  check:
+    type: "object"
+    properties:
+      idCheck:
+        type: "integer"
+        format: "int32"
+      typeCheck:
+        type: "string"
+      description:
+        type: "string"
+  errorModel:
+    type: "object"
+    required:
+    - "code"
+    - "message"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      message:
+        type: "string"
