@@ -1,3 +1,4 @@
+---
 swagger: "2.0"
 info:
   description: "A API about the results of the feedbacks"
@@ -173,6 +174,114 @@ paths:
           schema:
             $ref: "#/definitions/errorModel"
       x-swagger-router-controller: "Results"
+  /feedbacks/results/{student}/{id_feedback}/{id_check}:
+    get:
+      tags:
+      - "Checks results"
+      description: "Returns the result of the check id_check for the student and the\
+        \ if_feedback"
+      operationId: "findStudentFeedbackCheck"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/xml"
+      - "text/html"
+      parameters:
+      - name: "student"
+        in: "path"
+        description: "Name of student to fetch"
+        required: true
+        type: "string"
+      - name: "id_feedback"
+        in: "path"
+        description: "Id of feedback to fetch"
+        required: true
+        type: "string"
+      - name: "id_check"
+        in: "path"
+        description: "Id of check to fetch"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "results of the check"
+          schema:
+            $ref: "#/definitions/resultCheck"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "ChecksResults"
+    put:
+      tags:
+      - "Checks results"
+      summary: "Updated check result for a student and feedback"
+      operationId: "updateCheckResultStudent"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - name: "student"
+        in: "path"
+        description: "student to update"
+        required: true
+        type: "string"
+      - name: "id_feedback"
+        in: "path"
+        description: "feedback to update"
+        required: true
+        type: "string"
+      - name: "id_check"
+        in: "path"
+        description: "check to update"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated check object"
+        required: false
+        schema:
+          $ref: "#/definitions/resultCheck"
+      responses:
+        400:
+          description: "Invalid check supplied"
+        404:
+          description: "Check not found"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "ChecksResults"
+    delete:
+      tags:
+      - "Checks results"
+      description: "deletes a check based on the id_check, id_feedback and student\
+        \ supplied"
+      operationId: "deleteCheck"
+      parameters:
+      - name: "student"
+        in: "path"
+        description: "Name of student to fetch"
+        required: true
+        type: "string"
+      - name: "id_feedback"
+        in: "path"
+        description: "Id of feedback to fetch"
+        required: true
+        type: "string"
+      - name: "id_check"
+        in: "path"
+        description: "Id of feedback to fetch"
+        required: true
+        type: "string"
+      responses:
+        204:
+          description: "student deleted"
+        default:
+          description: "unexpected error"
+          schema:
+            $ref: "#/definitions/errorModel"
+      x-swagger-router-controller: "ChecksResults"
   /students:
     get:
       tags:
@@ -457,10 +566,6 @@ definitions:
       score:
         type: "integer"
         format: "int32g"
-      resultChecks:
-        type: "array"
-        items:
-          $ref: "#/definitions/resultCheck"
   resultCheck:
     type: "object"
     properties:
@@ -497,16 +602,11 @@ definitions:
   student:
     type: "object"
     properties:
-      id_feedback:
-        type: "integer"
-        format: "int32"
       name:
         type: "string"
       group:
         type: "integer"
         format: "int32"
-      section:
-        type: "string"  
       shift:
         type: "string"
   preparation:
