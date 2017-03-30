@@ -1,11 +1,21 @@
 'use strict';
 
-var app = require('connect')();
 var http = require('http');
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
 var fs = require('fs');
 var serverPort = process.env.PORT || 8080;
+var express = require('express');
+var path = require('path');
+var app = express();
+
+
+
+//---------------------------------------------
+var bodyParser = require("body-parser");
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname,'public')));
+//--------------------------------------------
 
 // swaggerRouter configuration
 var options = {
